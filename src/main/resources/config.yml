@@ -1,0 +1,5 @@
+Messages:
+  TargetNotFound: '&c&lError: Target could not be found please use a valid faction tag or player name!'
+  NoFaction: '&c&lError: The faction you attempted to ban is Wilderness!'
+FactionBan:
+  Disband: true
