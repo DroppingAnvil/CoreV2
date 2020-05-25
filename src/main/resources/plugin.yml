@@ -1,0 +1,4 @@
+name: AnvilCore
+main: me.droppinganvil.core.Core
+version: 1.0 BETA
+authors: [DroppingAnvil]

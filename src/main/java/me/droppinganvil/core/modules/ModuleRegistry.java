@@ -8,11 +8,12 @@ package me.droppinganvil.core.modules;
 import me.droppinganvil.core.Core;
 import me.droppinganvil.core.factions.FactionsPlugin;
 import me.droppinganvil.core.factions.modules.FactionBan;
+import me.droppinganvil.core.modules.AntiDupe.AntiDupe;
 
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ModuleRegistry {
-    public static ConcurrentHashMap<String, CoreModule> modules = new ConcurrentHashMap<String, CoreModule>();
+    public static ConcurrentHashMap<String, CoreModule> modules = new ConcurrentHashMap<>();
 
     static
     {
@@ -20,7 +21,11 @@ public class ModuleRegistry {
             //Load Factions core features
             modules.put("FactionBan", new FactionBan());
         }
+        if (Core.useNBTAPI) {
+            modules.put("AntiDupe", new AntiDupe());
+        }
+
         //Load features that do not have dependencies
-        
+
     }
 }

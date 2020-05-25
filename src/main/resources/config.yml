@@ -3,3 +3,27 @@ Messages:
   NoFaction: '&c&lError: The faction you attempted to ban is Wilderness!'
 FactionBan:
   Disband: true
+AntiDupe:
+  InventoryCache:
+    # This task will prepare inventories to be scanned on the other thread
+    SyncTaskInterval: 10
+    # The thread dedicated to scanning will stop checking for new inventories if none are ready for X milliseconds
+    AsyncTaskSleep: 15
+  PunishmentCommands:
+    - '/ipban {player} Suspicious items detected.'
+Discord:
+  Token: ''
+  # All status messages support PlaceholderAPI
+  Status:
+    UpdateInterval: 30
+    # Activity types: DEFAULT (Playing), WATCHING, LISTENING
+    Whitelisted:
+      Activity: 'WATCHING'
+      Message: '%server_name% undergo maintenance'
+    Open:
+      Activity: 'PLAYING'
+      Message: '%server_name% with %online_players% players'
+  Bot:
+    # Bot responses support PlaceholderAPI
+    -online: '%online_players% Players online.'
+    command: 'response'
