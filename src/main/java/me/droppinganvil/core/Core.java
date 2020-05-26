@@ -11,6 +11,7 @@ import me.droppinganvil.core.modules.CoreModule;
 import me.droppinganvil.core.modules.ModuleRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,6 +23,9 @@ public class Core extends JavaPlugin {
     public static FactionsPlugin factionsPlugin = FactionsLoader.detectAndLoad();
     public static boolean useNBTAPI = Dependencies.isNBTAPIInstalled();
     public static boolean usePAPI = Dependencies.isPlaceholderAPIInstalled();
+    public static String noPermission;
+    public static String notEnoughArgs;
+    public static String playerNotFound;
 
     public Core() {
         if (instance == null) instance = this;
@@ -32,6 +36,9 @@ public class Core extends JavaPlugin {
         for (CoreModule cm : ModuleRegistry.modules.values()) {
             cm.load();
         }
+        noPermission = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Messages.NoPermission", "&c&lError: You do not have permission to {feature}"));
+        notEnoughArgs = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Messages.NotEnoughArgs", "&c&lError: Syntax error. Use the command like this {command}"));
+        playerNotFound = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Messages.PlayerNotFound", "&c&lError: a player with the name '{name}' could not be found!"));
     }
 
     public void onDisable() {
@@ -71,5 +78,17 @@ public class Core extends JavaPlugin {
             }
             p.sendMessage(temp);
         }
+    }
+
+    public static void sendNoPermission(String feature, CommandSender commandSender) {
+        commandSender.sendMessage(noPermission.replace("{feature}", feature));
+    }
+
+    public static void sendSyntaxError(String command, CommandSender commandSender) {
+        commandSender.sendMessage(notEnoughArgs.replace("{command}", command));
+    }
+
+    public static void sendPlayerNotFound(String player, CommandSender commandSender) {
+        commandSender.sendMessage(playerNotFound.replace("{name}", player));
     }
 }

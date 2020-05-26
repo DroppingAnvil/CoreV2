@@ -23,6 +23,7 @@ public class ModuleRegistry {
         }
         if (Core.useNBTAPI) {
             modules.put("AntiDupe", new AntiDupe());
+            modules.put("CustomPotions", new CustomPotions());
         }
         modules.put("CustomCommands", new CustomCommands());
 
