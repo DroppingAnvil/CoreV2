@@ -24,6 +24,7 @@ public class ModuleRegistry {
         if (Core.useNBTAPI) {
             modules.put("AntiDupe", new AntiDupe());
         }
+        modules.put("CustomCommands", new CustomCommands());
 
         //Load features that do not have dependencies
 

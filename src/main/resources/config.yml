@@ -27,3 +27,9 @@ Discord:
     # Bot responses support PlaceholderAPI
     -online: '%online_players% Players online.'
     command: 'response'
+CustomCommands:
+  # Responses support PlaceholderAPI
+  vote:
+    - '&b&l Link 1'
+    - '&8&l Link 2'
+    - '&b&l Etc'

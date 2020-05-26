@@ -10,8 +10,12 @@ import me.droppinganvil.core.factions.FactionsPlugin;
 import me.droppinganvil.core.modules.CoreModule;
 import me.droppinganvil.core.modules.ModuleRegistry;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class Core extends JavaPlugin {
     public static Core instance;
@@ -42,6 +46,30 @@ public class Core extends JavaPlugin {
                     .replace("{player}", target.getName())
                     //If needed add more placeholders here
             );
+        }
+    }
+
+    public static HashMap<String, List<String>> parseMap(String path, Boolean lowercaseKeys) {
+        HashMap<String, List<String>> parsed = new HashMap<>();
+        for (String key : instance.getConfig().getConfigurationSection(path).getKeys(false)) {
+            if (!lowercaseKeys) {
+                parsed.put(key, instance.getConfig().getStringList(path + "." + key));
+            } else {
+                parsed.put(key.toLowerCase(), instance.getConfig().getStringList(path + "." + key));
+            }
+        }
+        return parsed;
+    }
+
+    public static void adaptAndSend(List<String> message, Player p) {
+        for (String s : message) {
+            String temp = s;
+            if (usePAPI) {
+                temp = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(p, s);
+            } else {
+                temp = ChatColor.translateAlternateColorCodes('&', temp);
+            }
+            p.sendMessage(temp);
         }
     }
 }
