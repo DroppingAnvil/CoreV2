@@ -7,6 +7,7 @@ package me.droppinganvil.core;
 
 import me.droppinganvil.core.factions.FactionsLoader;
 import me.droppinganvil.core.factions.FactionsPlugin;
+import me.droppinganvil.core.impl.MCVersion;
 import me.droppinganvil.core.modules.CoreModule;
 import me.droppinganvil.core.modules.ModuleRegistry;
 import org.bukkit.Bukkit;
@@ -26,6 +27,7 @@ public class Core extends JavaPlugin {
     public static String noPermission;
     public static String notEnoughArgs;
     public static String playerNotFound;
+    public static MCVersion minecraftVersion;
 
     public Core() {
         if (instance == null) instance = this;
@@ -39,6 +41,18 @@ public class Core extends JavaPlugin {
         noPermission = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Messages.NoPermission", "&c&lError: You do not have permission to {feature}"));
         notEnoughArgs = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Messages.NotEnoughArgs", "&c&lError: Syntax error. Use the command like this {command}"));
         playerNotFound = ChatColor.translateAlternateColorCodes('&', getConfig().getString("Messages.PlayerNotFound", "&c&lError: a player with the name '{name}' could not be found!"));
+        //Version finding
+        String bukkitVersion = getServer().getBukkitVersion();
+        for (MCVersion version : MCVersion.values()) {
+            if (bukkitVersion.contains(version.name())) {
+                minecraftVersion = version;
+                break;
+            }
+        }
+        if (minecraftVersion == null) {
+            //TODO Actually do this correctly by parsing the string I just dont be knowing what it'll be
+            minecraftVersion = MCVersion.Latest;
+        }
     }
 
     public void onDisable() {

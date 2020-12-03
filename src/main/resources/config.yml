@@ -30,6 +30,7 @@ Discord:
   Bot:
     # Bot responses support PlaceholderAPI
     -online: '%online_players% Players online.'
+    -tps: 'Current TPS: %server_tps%'
     command: 'response'
 CustomCommands:
   # Responses support PlaceholderAPI
@@ -56,3 +57,34 @@ CustomPotions:
       Green: 50
       Red: 50
   # Use {affected} for players who are hit by the potion.
+CustomMobs:
+  custom1:
+    Chance: 10
+    Entity: ZOMBIE
+    Name: '&8&lWicked Zombie'
+    Effects:
+      - 'Strength'
+      - 'Speed'
+    Weapon:
+      Material: Iron_Sword
+      Enchantments:
+        - 'Sharpness, 1'
+    Drops:
+      item1:
+        Chance: 100
+        Name: 'Diamond'
+        Material: DIAMOND
+        Amount: 1
+        Enchantments:
+        Lore:
+Perks:
+  Quick Reload:
+    Effect: false
+    ### This permission is for checking if the player has access to the perk not if it is enabled! ###
+    Permission: Core.QuickReload
+  Rebreather:
+    Effect: false
+    Permission: Core.Rebreather
+  Enchanced Vision:
+    Effect: false
+    Permission: Core.EnchancedVision
