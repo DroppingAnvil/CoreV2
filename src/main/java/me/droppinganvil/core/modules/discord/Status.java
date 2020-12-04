@@ -7,6 +7,7 @@ package me.droppinganvil.core.modules.discord;
 
 import me.droppinganvil.core.Core;
 import me.droppinganvil.core.modules.CoreModule;
+import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import org.bukkit.Bukkit;
 
@@ -26,9 +27,10 @@ public class Status implements CoreModule {
     }
 
     public void updateStatus() {
+        Discord.jda.getPresence().setStatus(OnlineStatus.IDLE);
         String path = Core.instance.getServer().hasWhitelist() ? "Whitelisted" : "Open";
         String message = Core.instance.getConfig().getString("Discord.Status." + path + ".Message", "Error");
         if (Core.usePAPI) message = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(null, message);
-        Discord.jda.getPresence().setPresence(Activity.of(Activity.ActivityType.valueOf("Discord.Status." + path + ".Activity"), message), true);
+        Discord.jda.getPresence().setPresence(Activity.of(Activity.ActivityType.valueOf(Core.instance.getConfig().getString("Discord.Status." + path + ".Activity")), message), true);
     }
 }

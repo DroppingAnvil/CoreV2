@@ -25,7 +25,7 @@ Discord:
       Activity: 'WATCHING'
       Message: '%server_name% undergo maintenance'
     Open:
-      Activity: 'PLAYING'
+      Activity: 'DEFAULT'
       Message: '%server_name% with %online_players% players'
   Bot:
     # Bot responses support PlaceholderAPI

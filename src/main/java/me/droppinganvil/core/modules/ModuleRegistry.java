@@ -9,6 +9,7 @@ import me.droppinganvil.core.Core;
 import me.droppinganvil.core.factions.FactionsPlugin;
 import me.droppinganvil.core.factions.modules.FactionBan;
 import me.droppinganvil.core.modules.AntiDupe.AntiDupe;
+import me.droppinganvil.core.modules.discord.Discord;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -28,6 +29,6 @@ public class ModuleRegistry {
         modules.put("CustomCommands", new CustomCommands());
 
         //Load features that do not have dependencies
-
+        modules.put("Discord", new Discord());
     }
 }

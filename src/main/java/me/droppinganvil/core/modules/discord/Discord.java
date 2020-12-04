@@ -25,6 +25,10 @@ public class Discord implements CoreModule {
         }
     }
 
+    public Discord() {
+
+    }
+
     @Override
     public void load() {
         if (jda != null) {
