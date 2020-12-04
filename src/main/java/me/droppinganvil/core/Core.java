@@ -21,9 +21,9 @@ import java.util.List;
 
 public class Core extends JavaPlugin {
     public static Core instance;
-    public static FactionsPlugin factionsPlugin = FactionsLoader.detectAndLoad();
-    public static boolean useNBTAPI = Dependencies.isNBTAPIInstalled();
-    public static boolean usePAPI = Dependencies.isPlaceholderAPIInstalled();
+    public static FactionsPlugin factionsPlugin;
+    public static boolean useNBTAPI;
+    public static boolean usePAPI;
     public static String noPermission;
     public static String notEnoughArgs;
     public static String playerNotFound;
@@ -35,6 +35,9 @@ public class Core extends JavaPlugin {
 
     public void onEnable() {
         saveDefaultConfig();
+        factionsPlugin = FactionsLoader.detectAndLoad(this);
+        useNBTAPI = Dependencies.isNBTAPIInstalled();
+        usePAPI = Dependencies.isPlaceholderAPIInstalled();
         for (CoreModule cm : ModuleRegistry.modules.values()) {
             cm.load();
         }

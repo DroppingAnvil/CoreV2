@@ -10,8 +10,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 public class FactionsLoader {
-    public static FactionsPlugin detectAndLoad() {
-        PluginManager pm = Core.instance.getServer().getPluginManager();
+    public static FactionsPlugin detectAndLoad(Core core) {
+        PluginManager pm = core.getServer().getPluginManager();
         if (pm.isPluginEnabled("Factions")) {
             Plugin factionsPlugin = pm.getPlugin("Factions");
             if (factionsPlugin.getDescription().getAuthors().contains("DroppingAnvil")) return FactionsPlugin.SaberFactions;

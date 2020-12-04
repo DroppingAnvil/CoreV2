@@ -10,6 +10,7 @@ public enum MCVersion {
     // Legacy is considered 1.13-
     V_1_8,
     Legacy,
+    V_1_13,
     V_1_16,
     Latest,
 }
