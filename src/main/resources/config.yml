@@ -1,3 +1,6 @@
+MySQL:
+  Username: 'SeamlessMC'
+  Password: 'SeamlessMC'
 Messages:
   PotionNotFound: '&c&lError: Potion not found!'
   PlayerNotFound: '&c&lError: a player with the name ''{name}'' could not be found!'
@@ -26,10 +29,10 @@ Discord:
       Message: '%server_name% undergo maintenance'
     Open:
       Activity: 'DEFAULT'
-      Message: '%server_name% with %online_players% players'
+      Message: '%server_name% with %server_online% players'
   Bot:
     # Bot responses support PlaceholderAPI
-    -online: '%online_players% Players online.'
+    -online: '%server_online% Players online.'
     -tps: 'Current TPS: %server_tps%'
     command: 'response'
 CustomCommands:
