@@ -5,10 +5,12 @@
 
 package me.droppinganvil.core;
 
+import me.droppinganvil.core.mysql.annotations.Key;
 import me.droppinganvil.core.mysql.annotations.MemoryOnly;
 import org.bukkit.entity.Player;
 
 public class SeamlessPlayer {
+    @Key
     public String uuid;
     @MemoryOnly
     public Player player;
