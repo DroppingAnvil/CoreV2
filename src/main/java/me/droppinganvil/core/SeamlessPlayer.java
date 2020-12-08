@@ -9,7 +9,12 @@ import me.droppinganvil.core.mysql.annotations.Key;
 import me.droppinganvil.core.mysql.annotations.MemoryOnly;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+
 public class SeamlessPlayer {
+    @MemoryOnly
+    public static HashMap<String, SeamlessPlayer> playerMap = new HashMap<>();
+    public SeamlessPlayer() {}
     @Key
     public String uuid;
     @MemoryOnly

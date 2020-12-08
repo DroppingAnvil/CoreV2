@@ -10,6 +10,7 @@ import me.droppinganvil.core.factions.FactionsPlugin;
 import me.droppinganvil.core.impl.MCVersion;
 import me.droppinganvil.core.modules.CoreModule;
 import me.droppinganvil.core.modules.ModuleRegistry;
+import me.droppinganvil.core.mysql.MySQL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -28,6 +29,7 @@ public class Core extends JavaPlugin {
     public static String notEnoughArgs;
     public static String playerNotFound;
     public static MCVersion minecraftVersion;
+    public static MySQL seamlessPlayerSQL;
 
     public Core() {
         if (instance == null) instance = this;
@@ -38,6 +40,10 @@ public class Core extends JavaPlugin {
         factionsPlugin = FactionsLoader.detectAndLoad(this);
         useNBTAPI = Dependencies.isNBTAPIInstalled();
         usePAPI = Dependencies.isPlaceholderAPIInstalled();
+        //MySQL
+        seamlessPlayerSQL = new MySQL(getConfig().getString("MySQL.Username", "SeamlessMC"), getConfig().getString("MySQL.Password", "SeamlessMC"), "SeamlessPlayers");
+        //SeamlessPlayer
+        getServer().getPluginManager().registerEvents(new CoreListeners(), this);
         for (CoreModule cm : ModuleRegistry.modules.values()) {
             cm.load();
         }
