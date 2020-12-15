@@ -14,18 +14,25 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 
 public class MySQL {
+    private String url = "mysqlx://localhost:33060/test";
+    private String user;
+    private String pass;
+    private String collectionName;
+    public Session session = new SessionFactory().getSession(url + "?user=" + user + "&password=" + pass);
+    public Collection collection;
+    public ObjectMapper mapper = new ObjectMapper();
 
     public MySQL(String username, String password, String collection) {
         this.user = username;
         this.pass = password;
         this.collectionName = collection;
     }
-    private String user;
-    private String pass;
-    private String collectionName;
-    public Session session = new SessionFactory().getSession("mysqlx://localhost:33060/test?user="+user+"&password="+pass);
-    public Collection collection;
-    public ObjectMapper mapper = new ObjectMapper();
+    public MySQL(String username, String password, String collection, String url) {
+        this.user = username;
+        this.pass = password;
+        this.collectionName = collection;
+        this.url = url;
+    }
 
     public void saveData(Object object, String key, String value) throws IllegalAccessException, IOException {
         checkCollection();
