@@ -41,7 +41,7 @@ public class Core extends JavaPlugin {
         useNBTAPI = Dependencies.isNBTAPIInstalled();
         usePAPI = Dependencies.isPlaceholderAPIInstalled();
         //MySQL
-        seamlessPlayerSQL = new MySQL(getConfig().getString("MySQL.Username", "SeamlessMC"), getConfig().getString("MySQL.Password", "SeamlessMC"), "SeamlessPlayers");
+        seamlessPlayerSQL = new MySQL(getConfig().getString("MySQL.Username", "SeamlessMC"), getConfig().getString("MySQL.Password", "SeamlessMC"), "SeamlessPlayers", getConfig().getString("MySQL.Database", "Seamless"));
         //SeamlessPlayer
         getServer().getPluginManager().registerEvents(new CoreListeners(), this);
         for (CoreModule cm : ModuleRegistry.modules.values()) {

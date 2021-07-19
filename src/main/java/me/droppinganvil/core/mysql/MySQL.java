@@ -7,31 +7,51 @@ package me.droppinganvil.core.mysql;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.*;
+import me.droppinganvil.core.exceptions.TypeNotSetException;
 import me.droppinganvil.core.mysql.annotations.Key;
 import me.droppinganvil.core.mysql.annotations.MemoryOnly;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySQL {
     private String url = "mysqlx://localhost:33060/test";
-    private String user;
-    private String pass;
-    private String collectionName;
-    public Session session = new SessionFactory().getSession(url + "?user=" + user + "&password=" + pass);
+    private final String user;
+    private final String pass;
+    private final String collectionName;
+    public Session session;
     public Collection collection;
+    public String schema;
     public ObjectMapper mapper = new ObjectMapper();
+    public final Class<?> type;
 
-    public MySQL(String username, String password, String collection) {
+    public MySQL(String username, String password, String collection, String schema) {
         this.user = username;
         this.pass = password;
         this.collectionName = collection;
+        this.type = null;
+        this.schema = schema;
+        session = new SessionFactory().getSession(url + "?user=" + user + "&password=" + pass);
     }
-    public MySQL(String username, String password, String collection, String url) {
+    public MySQL(String username, String password, String collection, String url, String schema) {
         this.user = username;
         this.pass = password;
         this.collectionName = collection;
         this.url = url;
+        this.type = null;
+        this.schema = schema;
+        session = new SessionFactory().getSession(url + "?user=" + user + "&password=" + pass);
+    }
+    public MySQL(String username, String password, String collection, String url, Class<?> type, String schema) {
+        this.user = username;
+        this.pass = password;
+        this.collectionName = collection;
+        this.url = url;
+        this.type = type;
+        this.schema = schema;
+        session = new SessionFactory().getSession(url + "?user=" + user + "&password=" + pass);
     }
 
     public void saveData(Object object, String key, String value) throws IllegalAccessException, IOException {
@@ -54,7 +74,11 @@ public class MySQL {
             collection.add(dbDoc).execute();
         }
     }
-    public Object getObject(String key, String value, Class<?> clazz) throws IllegalAccessException, InstantiationException, IOException {
+    public <T> T getObject(String key, String value) throws IllegalAccessException, InstantiationException, IOException, TypeNotSetException {
+        if (type == null) throw new TypeNotSetException();
+        return (T) getObject(key, value, type);
+    }
+    public <T> T getObject(String key, String value, Class<T> clazz) throws IllegalAccessException, InstantiationException, IOException {
         checkCollection();
         //This statement is for unique searches Ex. UUID
         DocResult docs = collection.find("$."+key+" = '"+value+"'").execute();
@@ -73,13 +97,41 @@ public class MySQL {
                 }
             }
         }
-        return o;
+        return (T) o;
     }
 
     public void checkCollection() {
-        if (session.getDefaultSchema().getCollection(collectionName).existsInDatabase() == DatabaseObject.DbObjectStatus.NOT_EXISTS) {
-            session.getDefaultSchema().createCollection(collectionName);
+            if (session.getSchema(schema).getCollection(collectionName).existsInDatabase() == DatabaseObject.DbObjectStatus.NOT_EXISTS) {
+                session.getSchema(schema).createCollection(collectionName);
+            }
+        collection = session.getSchema(schema).getCollection(collectionName);
+    }
+
+    public List<Object> getObjects(Class<?> clazz) {
+        try {
+            List<Object> objl = new ArrayList<>();
+            checkCollection();
+            System.out.println("[AnvilCore MySQL] Loading all objects in collection " + collectionName + " this might take some time");
+            Long now = System.currentTimeMillis();
+            DocResult docs = collection.find().execute();
+            for (DbDoc doc : docs.fetchAll()) {
+                Object o = clazz.newInstance();
+                if (docs.hasNext()) {
+                    DbDoc dbClass = docs.next();
+                    for (Field f : clazz.getDeclaredFields()) {
+                        if (!f.isAnnotationPresent(MemoryOnly.class)) {
+                            f.set(o, mapper.readValue(dbClass.get(f.getName()).toString(), f.getType()));
+                        }
+                    }
+                }
+            }
+
+            System.out.println("[AnvilCore MySQL] " + collectionName + " has completed loading. Time taken: " + (System.currentTimeMillis() - now) + "ms");
+            return objl;
+        } catch (Exception e) {
+            System.out.println("[AnvilCore MySQL] An error has occurred while loading " + collectionName);
+            e.printStackTrace();
         }
-        collection = session.getDefaultSchema().getCollection(collectionName);
+        return null;
     }
 }
