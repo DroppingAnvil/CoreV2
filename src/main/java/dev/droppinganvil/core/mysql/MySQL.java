@@ -1,15 +1,15 @@
 /*
- * Copyright (c) DroppingAnvil 2020.
+ * Copyright (c) DroppingAnvil 2021.
  * All Rights Reserved.
  */
 
-package me.droppinganvil.core.mysql;
+package dev.droppinganvil.core.mysql;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.*;
-import me.droppinganvil.core.exceptions.TypeNotSetException;
-import me.droppinganvil.core.mysql.annotations.Key;
-import me.droppinganvil.core.mysql.annotations.MemoryOnly;
+import dev.droppinganvil.core.exceptions.TypeNotSetException;
+import dev.droppinganvil.core.mysql.annotations.Key;
+import dev.droppinganvil.core.mysql.annotations.MemoryOnly;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -111,7 +111,7 @@ public class MySQL {
         try {
             List<Object> objl = new ArrayList<>();
             checkCollection();
-            System.out.println("[AnvilCore MySQL] Loading all objects in collection " + collectionName + " this might take some time");
+            System.out.println("[MySQL] Loading all objects in collection " + collectionName + " this might take some time");
             Long now = System.currentTimeMillis();
             DocResult docs = collection.find().execute();
             for (DbDoc doc : docs.fetchAll()) {
@@ -126,10 +126,10 @@ public class MySQL {
                 }
             }
 
-            System.out.println("[AnvilCore MySQL] " + collectionName + " has completed loading. Time taken: " + (System.currentTimeMillis() - now) + "ms");
+            System.out.println("[MySQL] " + collectionName + " has completed loading. Time taken: " + (System.currentTimeMillis() - now) + "ms");
             return objl;
         } catch (Exception e) {
-            System.out.println("[AnvilCore MySQL] An error has occurred while loading " + collectionName);
+            System.out.println("[MySQL] An error has occurred while loading " + collectionName);
             e.printStackTrace();
         }
         return null;
