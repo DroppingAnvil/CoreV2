@@ -1,22 +1,22 @@
 /*
- * Copyright (c) DroppingAnvil 2021.
+ * Copyright (c) Christopher Willett 2021.
  * All Rights Reserved.
  */
 
-package dev.droppinganvil.core.mysql;
+package us.anvildevelopment.v1.utils.database;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mysql.cj.xdevapi.*;
-import dev.droppinganvil.core.exceptions.TypeNotSetException;
-import dev.droppinganvil.core.mysql.annotations.Key;
-import dev.droppinganvil.core.mysql.annotations.MemoryOnly;
+import us.anvildevelopment.v1.utils.exceptions.TypeNotSetException;
+import us.anvildevelopment.v1.utils.database.annotations.Key;
+import us.anvildevelopment.v1.utils.database.annotations.MemoryOnly;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MySQL {
+public class SQLConnector {
     private String url = "mysqlx://localhost:33060/test";
     private final String user;
     private final String pass;
@@ -27,7 +27,7 @@ public class MySQL {
     public ObjectMapper mapper = new ObjectMapper();
     public final Class<?> type;
 
-    public MySQL(String username, String password, String collection, String schema) {
+    public SQLConnector(String username, String password, String collection, String schema) {
         this.user = username;
         this.pass = password;
         this.collectionName = collection;
@@ -35,7 +35,7 @@ public class MySQL {
         this.schema = schema;
         session = new SessionFactory().getSession(url + "?user=" + user + "&password=" + pass);
     }
-    public MySQL(String username, String password, String collection, String url, String schema) {
+    public SQLConnector(String username, String password, String collection, String url, String schema) {
         this.user = username;
         this.pass = password;
         this.collectionName = collection;
@@ -44,7 +44,7 @@ public class MySQL {
         this.schema = schema;
         session = new SessionFactory().getSession(url + "?user=" + user + "&password=" + pass);
     }
-    public MySQL(String username, String password, String collection, String url, Class<?> type, String schema) {
+    public SQLConnector(String username, String password, String collection, String url, Class<?> type, String schema) {
         this.user = username;
         this.pass = password;
         this.collectionName = collection;
@@ -80,7 +80,7 @@ public class MySQL {
     }
     public <T> T getObject(String key, String value, Class<T> clazz) throws IllegalAccessException, InstantiationException, IOException {
         checkCollection();
-        //This statement is for unique searches Ex. UUID
+        //This method is for unique searches Ex. UUID
         DocResult docs = collection.find("$."+key+" = '"+value+"'").execute();
         Object o = clazz.newInstance();
         if (docs.hasNext()) {
@@ -111,7 +111,7 @@ public class MySQL {
         try {
             List<Object> objl = new ArrayList<>();
             checkCollection();
-            System.out.println("[MySQL] Loading all objects in collection " + collectionName + " this might take some time");
+            System.out.println("[DB] Loading all objects in collection " + collectionName + " this might take some time");
             Long now = System.currentTimeMillis();
             DocResult docs = collection.find().execute();
             for (DbDoc doc : docs.fetchAll()) {
@@ -126,10 +126,10 @@ public class MySQL {
                 }
             }
 
-            System.out.println("[MySQL] " + collectionName + " has completed loading. Time taken: " + (System.currentTimeMillis() - now) + "ms");
+            System.out.println("[DB] " + collectionName + " has completed loading. Time taken: " + (System.currentTimeMillis() - now) + "ms");
             return objl;
         } catch (Exception e) {
-            System.out.println("[MySQL] An error has occurred while loading " + collectionName);
+            System.out.println("[DB] An error has occurred while loading " + collectionName);
             e.printStackTrace();
         }
         return null;

@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package dev.droppinganvil.core.mysql.annotations;
+package us.anvildevelopment.v1.utils.database.annotations;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

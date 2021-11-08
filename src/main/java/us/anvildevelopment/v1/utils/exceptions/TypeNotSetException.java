@@ -3,7 +3,7 @@
  * All Rights Reserved.
  */
 
-package dev.droppinganvil.core.exceptions;
+package us.anvildevelopment.v1.utils.exceptions;
 
 public class TypeNotSetException extends Exception {
     public TypeNotSetException() {
